@@ -3,20 +3,25 @@ import mysql from 'mysql';
 import endpoints from './endpoints.js';
 
 //instanciando o servidor
-var app = express();
+global.app = express();
 
 //declarando conexão com o BD
-var db = mysql.createConnection({
+global.db = mysql.createConnection({
     host:"localhost",
     user:"AvaliaUnbBackend",
     password:"AvaliaUnbSenha",
     database: "avaliaunb"
 });
 
-endpoints(app, db);
-
-//inicializando servidor
-app.listen(3000, () =>{
-    console.log("running on port 3000");
+//iniciando conexão
+global.db.connect((err) => {
+    if (err) throw err;
+    console.log("Conectado ao BD com sucesso");
 });
 
+endpoints();
+
+//inicializando servidor
+global.app.listen(3000, () =>{
+    console.log("rodando na porta 3000");
+});

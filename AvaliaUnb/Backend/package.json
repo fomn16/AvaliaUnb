@@ -18,10 +18,11 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
+    "@types/mysql": "^2.15.21",
+    "@types/passport": "^1.0.12",
+    "@types/passport-jwt": "^3.0.8",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
-    "swagger-autogen": "^2.23.1",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^4.6.3"
+    "passport-jwt": "^4.0.1"
   }
 }
