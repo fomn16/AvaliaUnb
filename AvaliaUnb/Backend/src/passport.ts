@@ -1,18 +1,26 @@
 import passport from 'passport';
-import mysql from 'mysql';
-import passportJwt, { ExtractJwt } from 'passport-jwt';
-import Usuario from './Models/Usuario.js'
+import passportJwt from 'passport-jwt';
+import {RepositorioUsuario, IUsuario} from './Models/Usuario.js'
+import jwt from 'jsonwebtoken';
 
-export const Passport = () =>{
-    const JwtStrategy = passportJwt.Strategy;
-    const extractJwt = passportJwt.ExtractJwt;
+const JwtStrategy = passportJwt.Strategy;
+const extractJwt = passportJwt.ExtractJwt;
 
-    passport.use(new JwtStrategy({
-        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: 'BancosDeDados2023'
-    }, (jwtPayload, done) => {
-        return Usuario.Get(jwtPayload.sub)
-        .then( user => done(null, user))
-        .catch(err => done(err))
-    }))
-}
+export const genToken = (user : IUsuario) => {
+    return jwt.sign({
+        iss: 'AvaliaUnb',
+        sub: user.matricula,
+        iat: new Date().getTime(),
+        exp: new Date().setDate(new Date().getDate() + 1)
+    }, 'AvaliaUnb');
+} 
+
+passport.use(new JwtStrategy({
+    jwtFromRequest: extractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: 'AvaliaUnb'
+}, (jwtPayload, done) => {
+    return RepositorioUsuario.Get(jwtPayload.sub)
+    .then( user => done(null, user))
+    .catch(err => {
+        done(err)})
+}))

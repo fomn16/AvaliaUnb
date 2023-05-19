@@ -1,10 +1,10 @@
 import express from 'express';
 import mysql from 'mysql';
-import endpoints from './endpoints.js';
+import bodyParser from 'body-parser'
 
 //instanciando o servidor
 global.app = express();
-
+global.app.use(bodyParser.json());
 //declarando conexão com o BD
 global.db = mysql.createConnection({
     host:"localhost",
@@ -19,7 +19,8 @@ global.db.connect((err) => {
     console.log("Conectado ao BD com sucesso");
 });
 
-endpoints();
+import('./passport.js')
+import('./Endpoints/endpoints.js')
 
 //inicializando servidor
 global.app.listen(3000, () =>{
