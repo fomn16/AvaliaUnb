@@ -1,7 +1,7 @@
 
 import {genToken} from '../passport.js'
 import bcrypt from 'bcrypt'
-import {RepositorioUsuario, IUsuario} from "../Models/Usuario.js";
+import {RepositorioUsuario, IUsuario} from "../ModelsAndRepo/Usuario.js";
 
 global.app.post('/auth/register', async (req, res, next) => {
     const novoUsuario : IUsuario = req.body;

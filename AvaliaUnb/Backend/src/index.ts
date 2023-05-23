@@ -5,6 +5,7 @@ import bodyParser from 'body-parser'
 //instanciando o servidor
 global.app = express();
 global.app.use(bodyParser.json());
+
 //declarando conexão com o BD
 global.db = mysql.createConnection({
     host:"localhost",
