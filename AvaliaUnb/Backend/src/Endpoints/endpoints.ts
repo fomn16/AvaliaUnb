@@ -8,7 +8,7 @@ fs.readdirSync('./dist/Endpoints/').forEach((file) => {
 
 //route de teste
 global.app.get("/teste", passport.authenticate('jwt',{session: false}), (req, res, next) => {
-    global.db.query("select * from departamento", function (err, result) {
+    global.db.query("select * from departamento", (err, result) => {
         if (err) throw err;
         res.json({...result, user: req.user});
     });

@@ -1,15 +1,8 @@
-import bcrypt from 'bcrypt'
-import crypto from 'crypto'
-
-export interface IUsuario{
-    matricula : number;
-    email?: string;
-    nome?: string;
-    senha?: string;
-    salt?: string;
-    administrador?: boolean;
+export interface ILocal{
+    codigo : number;
+    nome : string;
 }
-
+/*
 export class RepositorioUsuario{
     static Map = ((usuarioRow) : IUsuario => {
         return {
@@ -24,7 +17,7 @@ export class RepositorioUsuario{
 
     static Get = (matricula:number): Promise<IUsuario | undefined> => {
         return new Promise((resolve, reject) => {
-            global.db.query("SELECT * FROM USUARIO WHERE MATRICULA = ?", [matricula], (err, result) => {
+            global.db.query("SELECT * FROM USUARIO WHERE MATRICULA = ?", [matricula], function (err, result) {
                 if (err) reject(err);
                 else {
                     const usuarioRow = result?.[0];
@@ -42,7 +35,7 @@ export class RepositorioUsuario{
             return bcrypt.hash(saltedPassword, 10)
             .then(hash => {
                 global.db.query("INSERT INTO USUARIO VALUES(?,?,?,?,?,?)", 
-                [usuario.matricula, usuario.email, usuario.nome, hash, salt , false], (err, result) => {
+                [usuario.matricula, usuario.email, usuario.nome, hash, salt , false], function (err, result) {
                     if (err) return reject(err);
                     return resolve({
                         matricula: usuario.matricula, 
@@ -55,4 +48,4 @@ export class RepositorioUsuario{
             .catch(err => reject(err));
         })
     }
-}
+}*/

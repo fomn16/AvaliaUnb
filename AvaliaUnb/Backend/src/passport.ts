@@ -1,6 +1,6 @@
 import passport from 'passport';
 import passportJwt from 'passport-jwt';
-import {RepositorioUsuario, IUsuario} from './ModelsAndRepo/Usuario.js'
+import {RepositorioUsuario, IUsuario} from './ModelsAndRepo/usuario.js'
 import jwt from 'jsonwebtoken';
 
 const JwtStrategy = passportJwt.Strategy;
