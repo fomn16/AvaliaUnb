@@ -1,11 +1,13 @@
 import {IUsuario} from './usuario.js'
 import { ITurma } from './turma.js';
+import { IAvaliacaoProfessor , RepositorioAvaliacaoProfessor} from './avaliacaoProfessor.js';
 
 export interface IAvaliacao{
     usuario? : IUsuario;
     turma? : ITurma;
-    nota : number;
+    nota? : number;
     texto? : string;
+    avaliacaoProfessores? : IAvaliacaoProfessor[];
 }
 
 export interface IAvaliacaoFilter{
@@ -28,62 +30,101 @@ export class RepositorioAvaliacao{
             texto : avaliacaoRow.TEXTO
         }
     })
-    
+
     static Save(avaliacao : IAvaliacao) : Promise<string>{
         return new Promise((resolve, reject) => {
-            global.db.query(
-                `SELECT COUNT(*) CNT
-                 FROM AVALIACAO 
-                 WHERE  USUARIO_MATRICULA = ? AND 
-                        TURMA_PERIODO_CODIGO = ? AND 
-                        TURMA_DISCIPLINA_CODIGO = ? AND 
-                        TURMA_CODIGO = ?`,
-            [   avaliacao.usuario.matricula, 
-                avaliacao.turma.periodo.codigo,
-                avaliacao.turma.disciplina.codigo, 
-                avaliacao.turma.codigo
-            ],(err, result) => {
-                if (err) return reject(err);
+            RepositorioAvaliacao.Get(avaliacao)
+            .then(result => {
                 //CADASTRO
-                if(result?.[0].CNT == 0){
+                if(result.length == 0){
                     global.db.query(
                         "INSERT INTO AVALIACAO VALUES(?,?,?,?,?,?)", 
                     [   avaliacao.usuario.matricula, avaliacao.turma.periodo.codigo,
                         avaliacao.turma.disciplina.codigo, avaliacao.turma.codigo,
                         avaliacao.nota, avaliacao.texto
                     ], (err, result) => {
-                        if (err) return reject(err);
-                        return resolve("Avaliação cadastrada com sucesso");
+                        if (err) reject(err);
+                        //cadastra avaliação de professores
+                        else if (avaliacao.avaliacaoProfessores?.length){
+                            let saves : Promise<string>[] = [];
+                            avaliacao.avaliacaoProfessores.forEach(ap => { 
+                                saves.push(RepositorioAvaliacaoProfessor.Save({...ap, avaliacao: avaliacao}));
+                            });
+                            Promise.all(saves)
+                            .then( () =>{
+                                resolve("Avaliação cadastrada com sucesso");
+                            })
+                            .catch( err =>{
+                                reject(err);
+                            });
+                        }
+                        else{
+                            resolve("Avaliação cadastrada com sucesso");
+                        }
                     });
                 }
                 //EDIÇÃO
                 else{
                     global.db.query(
                         `UPDATE AVALIACAO 
-                         SET NOTA = ?, TEXTO = ?`, 
-                    [avaliacao.nota, avaliacao.texto], (err, result) => {
-                        if (err) return reject(err);
-                        return resolve("Avaliação editada com sucesso");
+                         SET NOTA = ?, TEXTO = ?
+                         WHERE  USUARIO_MATRICULA = ? AND 
+                         TURMA_PERIODO_CODIGO = ? AND 
+                         TURMA_DISCIPLINA_CODIGO = ? AND 
+                         TURMA_CODIGO = ?`, 
+                    [   avaliacao.nota, 
+                        avaliacao.texto, 
+                        avaliacao.usuario.matricula, 
+                        avaliacao.turma.periodo.codigo,
+                        avaliacao.turma.disciplina.codigo,
+                        avaliacao.turma.codigo
+                    ], (err, result) => {
+                        if (err) reject(err);
+                        //atualiza avaliação de professores
+                        else if (avaliacao.avaliacaoProfessores?.length){
+                            let saves : Promise<string>[] = [];
+                            avaliacao.avaliacaoProfessores.forEach(ap => { 
+                                saves.push(RepositorioAvaliacaoProfessor.Save({...ap, avaliacao: avaliacao}));
+                            });
+                            Promise.all(saves)
+                            .then( () =>{
+                                resolve("Avaliação editada com sucesso");
+                            })
+                            .catch( err =>{
+                                reject(err);
+                            });
+                        }
+                        else{
+                            resolve("Avaliação editada com sucesso");
+                        }
                     });
                 }
-            });
+            })
+            .catch(err => reject(err));
         })
     }
 
     static Delete(avaliacao : IAvaliacao) : Promise<void>{
         return new Promise((resolve, reject) => {
-            global.db.query(
-                `DELETE FROM AVALIACAO
-                 WHERE  USUARIO_MATRICULA = ? AND 
-                        TURMA_PERIODO_CODIGO = ? AND 
-                        TURMA_DISCIPLINA_CODIGO = ? AND 
-                        TURMA_CODIGO = ?`, 
-            [   avaliacao.usuario.matricula, avaliacao.turma.periodo.codigo,
-                avaliacao.turma.disciplina.codigo, avaliacao.turma.codigo
-            ], (err, result) => {
-                if (err) return reject(err);
-                return resolve();
-            }); 
+            //deleta avaliações de professores
+            RepositorioAvaliacaoProfessor.Delete({avaliacao:avaliacao})
+            .then( () =>{
+                global.db.query(
+                    `DELETE FROM AVALIACAO
+                        WHERE  USUARIO_MATRICULA = ? AND 
+                            TURMA_PERIODO_CODIGO = ? AND 
+                            TURMA_DISCIPLINA_CODIGO = ? AND 
+                            TURMA_CODIGO = ?`, 
+                [   avaliacao.usuario.matricula, avaliacao.turma.periodo.codigo,
+                    avaliacao.turma.disciplina.codigo, avaliacao.turma.codigo
+                ], (err, result) => {
+                    if (err) reject(err);
+                    else resolve();
+                });
+            })
+            .catch( err =>{
+                reject(err);
+            })
         })
     }
 
@@ -94,10 +135,12 @@ export class RepositorioAvaliacao{
              WHERE 1=1
         ${filtro.usuario?.matricula != null ? 
             `AND USUARIO_MATRICULA = ${filtro.usuario.matricula}` : ``}
-        ${filtro.turma?.codigo != null && filtro.turma?.disciplina?.codigo != null && filtro.turma?.periodo?.codigo != null ? 
-            `AND TURMA_PERIODO_CODIGO =  ${filtro.turma.periodo.codigo}
-             AND TURMA_DISCIPLINA_CODIGO =  ${filtro.turma.disciplina.codigo}
-             AND TURMA_CODIGO =  ${filtro.turma.codigo}  ` : ``}
+        ${filtro.turma?.periodo?.codigo  != null ? 
+            `AND TURMA_PERIODO_CODIGO =  ${filtro.turma.periodo.codigo}` : ``}
+        ${filtro.turma?.disciplina?.codigo != null ?
+            `AND TURMA_DISCIPLINA_CODIGO =  ${filtro.turma.disciplina.codigo}  ` : ``}
+        ${filtro.turma?.codigo != null ?
+            `AND TURMA_CODIGO =  ${filtro.turma.codigo}  ` : ``}
         ${filtro.notaMin != null ? 
             `AND NOTA >= ${filtro.notaMin}` : ``}
         ${filtro.notaMax != null ? 
@@ -108,11 +151,18 @@ export class RepositorioAvaliacao{
                 if (err) reject(err);
                 else {
                     if(result?.[0]){
-                        let ret : IAvaliacao[] = [];
-                        result.forEach(ava => {
-                            ret.push(RepositorioAvaliacao.Map(ava));
-                        }); 
-                        resolve(ret);
+                        const promises: Promise<IAvaliacao>[] = result.map(ava => {
+                            const avaliacao = RepositorioAvaliacao.Map(ava);
+                            return RepositorioAvaliacaoProfessor.Get({avaliacao:avaliacao})
+                            .then(avaProf =>{
+                                avaliacao.avaliacaoProfessores = avaProf;
+                                return avaliacao;
+                            })
+                            .catch(err => {return avaliacao})
+                        });
+                        Promise.all(promises).then(avaliacoes =>{
+                            resolve(avaliacoes);
+                        })
                     }
                     else resolve([]);
                 }

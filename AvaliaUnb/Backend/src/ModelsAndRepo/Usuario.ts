@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import crypto from 'crypto'
 
 export interface IUsuario{
-    matricula : number;
+    matricula? : number;
     email?: string;
     nome?: string;
     senha?: string;
@@ -35,6 +35,16 @@ export class RepositorioUsuario{
         });
     }
 
+    static TornarAdministrador = (matricula:number): Promise<void> => {
+        return new Promise((resolve, reject) => {
+            global.db.query("UPDATE USUARIO SET ADMINISTRADOR = 1 WHERE MATRICULA = ?", [matricula], (err, result) => {
+                if (err) reject(err);
+                else resolve();
+            });
+        });
+    }
+
+
     static Save(usuario : IUsuario) : Promise<IUsuario>{
         return new Promise((resolve, reject) => {
             var salt = crypto.randomBytes(20).toString('hex');
@@ -43,8 +53,8 @@ export class RepositorioUsuario{
             .then(hash => {
                 global.db.query("INSERT INTO USUARIO VALUES(?,?,?,?,?,?)", 
                 [usuario.matricula, usuario.email, usuario.nome, hash, salt , false], (err, result) => {
-                    if (err) return reject(err);
-                    return resolve({
+                    if (err) reject(err);
+                    else resolve({
                         matricula: usuario.matricula, 
                         email: usuario.email, 
                         nome:usuario.nome, 

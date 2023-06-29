@@ -1,5 +1,6 @@
 import passport from "passport";
 import { IAvaliacao, IAvaliacaoFilter, RepositorioAvaliacao} from "../ModelsAndRepo/avaliacao.js";
+import { TreatedResponse } from "../ModelsAndRepo/treatedResponse.js";
 
 global.app.post("/avaliacao", passport.authenticate('jwt',{session: false}), (req, res, next) => {
     const novaAvaliacao : IAvaliacao = req.body;
@@ -9,8 +10,13 @@ global.app.post("/avaliacao", passport.authenticate('jwt',{session: false}), (re
         return res.status(200).json({message:msg});
     })
     .catch(err => { 
-        console.log(err);
-        return res.status(500).json({error:'Erro ao cadastrar a avaliação'});
+        if(err instanceof TreatedResponse){
+            return res.status(500).json({error:'Erro ao cadastrar a avaliação: ' + err.treatedMessage});
+        }
+        else{
+            console.log(err);
+            return res.status(500).json({error:'Erro ao cadastrar a avaliação'});
+        }
     });
 });
 
