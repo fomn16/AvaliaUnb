@@ -24,7 +24,7 @@ global.app.get("/avaliacao", passport.authenticate('jwt',{session: false}), (req
     const filtroAvaliacao : IAvaliacaoFilter = req.body;
     RepositorioAvaliacao.Get(filtroAvaliacao)
     .then( avaliacao => {
-        return res.status(200).json(avaliacao);
+        return res.status(200).json(avaliacao.filter(ava => ava.ativo || ava.usuario.matricula == req.user.matricula));
     })
     .catch(err => {
         console.log(err);

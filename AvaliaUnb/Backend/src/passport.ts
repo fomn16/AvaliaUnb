@@ -20,7 +20,12 @@ passport.use(new JwtStrategy({
     secretOrKey: 'AvaliaUnb'
 }, (jwtPayload, done) => {
     return RepositorioUsuario.Get(jwtPayload.sub)
-    .then( user => done(null, user))
+    .then( user => {
+        if(user.ativo)
+            done(null, user);
+        else
+            done(null, false, "Usuário perdeu acesso ao sistema.")
+    })
     .catch(err => {
         done(err)})
 }))

@@ -8,6 +8,7 @@ export interface IAvaliacao{
     nota? : number;
     texto? : string;
     avaliacaoProfessores? : IAvaliacaoProfessor[];
+    ativo?: boolean;
 }
 
 export interface IAvaliacaoFilter{
@@ -27,7 +28,8 @@ export class RepositorioAvaliacao{
                         disciplina : {codigo : avaliacaoRow.TURMA_DISCIPLINA_CODIGO}
                     },
             nota : avaliacaoRow.NOTA,
-            texto : avaliacaoRow.TEXTO
+            texto : avaliacaoRow.TEXTO,
+            ativo: avaliacaoRow.ATIVO
         }
     })
 
@@ -38,10 +40,10 @@ export class RepositorioAvaliacao{
                 //CADASTRO
                 if(result.length == 0){
                     global.db.query(
-                        "INSERT INTO AVALIACAO VALUES(?,?,?,?,?,?)", 
+                        "INSERT INTO AVALIACAO VALUES(?,?,?,?,?,?,?)", 
                     [   avaliacao.usuario.matricula, avaliacao.turma.periodo.codigo,
                         avaliacao.turma.disciplina.codigo, avaliacao.turma.codigo,
-                        avaliacao.nota, avaliacao.texto
+                        avaliacao.nota, avaliacao.texto, true
                     ], (err, result) => {
                         if (err) reject(err);
                         //cadastra avaliação de professores
@@ -114,7 +116,8 @@ export class RepositorioAvaliacao{
                         WHERE  USUARIO_MATRICULA = ? AND 
                             TURMA_PERIODO_CODIGO = ? AND 
                             TURMA_DISCIPLINA_CODIGO = ? AND 
-                            TURMA_CODIGO = ?`, 
+                            TURMA_CODIGO = ?
+                            AND ATIVO = 1`, 
                 [   avaliacao.usuario.matricula, avaliacao.turma.periodo.codigo,
                     avaliacao.turma.disciplina.codigo, avaliacao.turma.codigo
                 ], (err, result) => {

@@ -20,7 +20,7 @@ global.app.post('/auth/register', async (req, res, next) => {
         })
         .catch(err => {
             console.log(err);
-            return res.status(500).json({error:'erro ao cadastrar usuario'});
+            return res.status(500).json({error:'erro ao cadastrar usuario : ' + err.toString()});
         });
     });
 })
@@ -35,7 +35,10 @@ global.app.post('/auth/login', async (req, res, next) => {
             return res.status(403).json({error:'matrícula ou senha errada'});
         
         bcrypt.compare(credenciais.senha + usuario.salt, usuario.senha, (err, result) => {
-            if(err) return res.status(500).json({error:'erro ao recuperar usuario'});
+            if(err){
+                console.log(err);
+                return res.status(500).json({error:'erro ao recuperar usuario'});
+            }
             if (result) {
                 const token = genToken(usuario);
                 return res.status(200).json({token});
