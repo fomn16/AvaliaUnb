@@ -1,0 +1,22 @@
+@font-face {
+  font-family: 'Odibee';
+  src: url('../Fonts/OdibeeSans-Regular.ttf');
+}
+
+.TitleName{
+    font-family: 'Odibee';
+    font-size: 100px;
+    margin-top: 20px;
+    color: var(--dark);
+}
+
+.Welcome{
+  color: var(--light);
+  background-color: var(--dark);
+  width: 600px;
+  height: 300px;
+  padding: 50px;
+  padding-top: 0;
+  margin-top: 0;
+  border-radius: 20px;
+}
