@@ -2,13 +2,17 @@
   --light:#84ffd0;
   --light2:#76d8ff;
   --medium:#00cba9;
-  --dark:#1f3d32  ;
+  --mediumAccent:#ffba60;
+  --dark:#1f3d32;
 }
 .App {
   text-align: center;
   width: auto;
-  overflow-y:;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+
 .App-header {
   min-height: 100vh;
   display: flex;
@@ -23,16 +27,18 @@
   right: 0;
   bottom: 0;
   left: 0;
-  position: absolute;
+  position: relative;
   background-color: var(--light2);
   z-index: -2;
+  position: fixed;
 }
 .BottomSvg{
   bottom: 0;
   left: 0;
-  position: absolute;
+  position: fixed;
   fill: var(--medium);
-  z-index: 0;
+  z-index: -1;
   transform-origin: bottom;
   transform: scaleY(0.6);
+  width: 100%;
 }

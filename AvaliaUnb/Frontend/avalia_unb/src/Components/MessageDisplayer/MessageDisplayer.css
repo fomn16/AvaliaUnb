@@ -1,0 +1,16 @@
+.MessageDisplayer{
+    background-color: var(--mediumAccent);
+    margin: 20px;
+    display: flex;
+    flex-direction: row;
+    align-content: space-around;
+    justify-content: space-around;
+    align-items: center;
+    width: fit-content;
+    align-self: center;
+    padding: 5px 20px 5px 20px;
+    min-width: 100px;
+    border-radius: 20px;
+    position: fixed;
+    z-index: 3;
+}

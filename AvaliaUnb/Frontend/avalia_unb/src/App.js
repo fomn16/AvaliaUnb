@@ -1,11 +1,14 @@
 import './App.css';
-import Landing from './Pages/Landing';
 import React from 'react';
 import {connect} from 'react-redux'
+
+import Landing from './Pages/Landing/Landing';
+import MessageDisplayer from './Components/MessageDisplayer/MessageDisplayer';
 
 function App({user}) {
   return (
     <div className="App">
+      <MessageDisplayer/>
       <header className="App-header">
         <RouteSelector user={user}/>
       </header>
@@ -25,7 +28,7 @@ function RouteSelector({user}){
 }
 
 const mapStateToProps = (state) =>{
-  return {user:state.user}
+  return {user:state.session.user}
 }
 
 export default connect(mapStateToProps)(App);

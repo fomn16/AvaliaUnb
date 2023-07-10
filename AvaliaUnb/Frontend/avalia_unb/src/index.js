@@ -7,11 +7,13 @@ import reportWebVitals from './reportWebVitals';
 import {createStore, combineReducers} from 'redux';
 import { Provider } from 'react-redux'
 import sessionReducer from './StateManagement/Reducers/sessionReducer'
+import messageDisplayReducer from './StateManagement/Reducers/messageDisplayReducer'
 
-/*const reducer = combineReducers(sessionReducer){
-    session = sessionReducer
-}*/
-const store = createStore(sessionReducer);
+const reducer = combineReducers({
+  session: sessionReducer,
+  messageDisplay: messageDisplayReducer
+});
+const store = createStore(reducer);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

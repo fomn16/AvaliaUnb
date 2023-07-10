@@ -1,9 +1,11 @@
 import express from 'express';
+import cors from 'cors'
 import mysql from 'mysql';
 import bodyParser from 'body-parser'
 
 //instanciando o servidor
 global.app = express();
+global.app.use(cors());
 global.app.use(bodyParser.json());
 
 //declarando conexão com o BD
@@ -24,6 +26,6 @@ import('./passport.js')
 import('./Endpoints/endpoints.js')
 
 //inicializando servidor
-global.app.listen(3000, () =>{
-    console.log("rodando na porta 3000");
+global.app.listen(3001, () =>{
+    console.log("rodando na porta 3001");
 });
