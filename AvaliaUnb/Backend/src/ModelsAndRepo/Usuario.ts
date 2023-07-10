@@ -9,6 +9,7 @@ export interface IUsuario{
     salt?: string;
     administrador?: boolean;
     ativo?: boolean;
+    avatar?: string;
 }
 
 export class RepositorioUsuario{
@@ -20,7 +21,8 @@ export class RepositorioUsuario{
             senha: usuarioRow.SENHA_HASH,
             salt: usuarioRow.SENHA_SALT,
             administrador: usuarioRow.ADMINISTRADOR,
-            ativo: usuarioRow.ATIVO
+            ativo: usuarioRow.ATIVO,
+            avatar: usuarioRow.AVATAR.toString('utf8')
         }
     })
 
@@ -53,8 +55,8 @@ export class RepositorioUsuario{
             var saltedPassword = usuario.senha + salt;
             return bcrypt.hash(saltedPassword, 10)
             .then(hash => {
-                global.db.query("INSERT INTO USUARIO VALUES(?,?,?,?,?,?,?)", 
-                [usuario.matricula, usuario.email, usuario.nome, hash, salt , false, true], (err, result) => {
+                global.db.query("INSERT INTO USUARIO VALUES(?,?,?,?,?,?,?,?)", 
+                [usuario.matricula, usuario.email, usuario.nome, hash, salt , false, true,Buffer.from(usuario.avatar, 'utf8')], (err, result) => {
                     if (err) {
                         console.log(err);
                         reject(err);
@@ -64,7 +66,8 @@ export class RepositorioUsuario{
                         email: usuario.email, 
                         nome:usuario.nome, 
                         administrador:false,
-                        ativo: true
+                        ativo: true,
+                        avatar:usuario.avatar
                     })
                 });   
             })

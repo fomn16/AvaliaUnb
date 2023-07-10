@@ -16,8 +16,8 @@ function Landing() {
 
   const selectForm = option =>{
     switch (option){
-        case 1: return <LoginForm/>
-        case 2: return <RegisterForm/>
+        case 1: return (<><div className="dotted-line"/><LoginForm/></>)
+        case 2: return (<><div className="dotted-line"/><RegisterForm/></>)
         default: return null;
     }
   }

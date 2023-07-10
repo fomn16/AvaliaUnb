@@ -3,6 +3,7 @@ import React from 'react';
 import {connect} from 'react-redux'
 
 import Landing from './Pages/Landing/Landing';
+import Authenticated from './Pages/Authed/Authenticated';
 import MessageDisplayer from './Components/MessageDisplayer/MessageDisplayer';
 
 function App({user}) {
@@ -22,7 +23,7 @@ function App({user}) {
 
 function RouteSelector({user}){
   if(user.signedIn){
-    return(<h1>fez login!</h1>)
+    return <Authenticated/>
   }
   return <Landing/>;
 }

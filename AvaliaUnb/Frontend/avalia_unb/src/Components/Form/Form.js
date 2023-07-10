@@ -2,7 +2,7 @@ import './Form.css'
 import Button from '../Button/Button';
 
 //items = [{name, type}]
-function Form ({formData, setFormData, submitText, onSubmit, items}){
+function Form ({formData, setFormData, submitText, onSubmit, items, children}){
     if(items === undefined)
         return null;
 
@@ -16,6 +16,7 @@ function Form ({formData, setFormData, submitText, onSubmit, items}){
 
     return(
         <form onSubmit={onSubmit}>
+        {children}
         {items.map((item, id) => {
             return(
                 <label key={id}>
@@ -24,7 +25,6 @@ function Form ({formData, setFormData, submitText, onSubmit, items}){
                 </label>
             )
         })}
-        
         <Button type="submit">{submitText}</Button>
         </form>
     )

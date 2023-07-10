@@ -6,7 +6,8 @@ import bodyParser from 'body-parser'
 //instanciando o servidor
 global.app = express();
 global.app.use(cors());
-global.app.use(bodyParser.json());
+global.app.use(bodyParser.json({ limit: '10mb' }));
+global.app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 //declarando conexão com o BD
 global.db = mysql.createConnection({

@@ -24,6 +24,7 @@
     "@types/mysql": "^2.15.21",
     "@types/passport": "^1.0.12",
     "@types/passport-jwt": "^3.0.8",
+    "axios": "^1.4.0",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "csv-parser": "^3.0.0",

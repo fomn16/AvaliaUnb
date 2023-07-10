@@ -16,7 +16,7 @@ global.app.post('/auth/register', async (req, res, next) => {
         return RepositorioUsuario.Save(novoUsuario)
         .then(usuarioBd => {
             const token = genToken(usuarioBd);
-            return res.status(200).json({token});
+            return res.status(200).json({nome: usuarioBd.nome, email:usuarioBd.email, matricula: usuarioBd.matricula, token:token, avatar:usuarioBd.avatar});
         })
         .catch(err => {
             console.log(err);
@@ -41,7 +41,7 @@ global.app.post('/auth/login', async (req, res, next) => {
             }
             if (result) {
                 const token = genToken(usuario);
-                return res.status(200).json({token});
+                return res.status(200).json({nome: usuario.nome, email:usuario.email, matricula: usuario.matricula, token:token, avatar:usuario.avatar});
             }
             return res.status(403).json({error:'matrícula ou senha errada'});
         });        

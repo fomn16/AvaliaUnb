@@ -1,4 +1,4 @@
-import React , {useState} from 'react';
+import React , {useState, useEffect} from 'react';
 import Axios from 'axios'
 import { connect } from 'react-redux';
 
@@ -11,8 +11,11 @@ function RegisterForm({signIn, showMessage}){
         matricula: '',
         email: '',
         nome: '',
-        senha: ''
+        senha: '',
+        avatar: ''
     });
+
+    const [avatarId, setAvatarId] = useState(Math.floor(Math.random()*100));
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -21,10 +24,32 @@ function RegisterForm({signIn, showMessage}){
             signIn(response.data)
         })
         .catch(error => {
-            showMessage(error.response.data.error);
             console.log('Error:', error);
+            showMessage(error?.response?.data?.error ?? error.message);
         });
     }
+
+    const reloadImage = () => {
+        Axios.get('https://api.multiavatar.com/' + formData.nome + avatarId.toString() + '.png?apikey=sXHqEOnFhazZ7S', {
+            responseType: 'blob',
+        })
+        .then(response => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setAvatarId(avatarId+1);
+                setFormData({...formData, avatar:reader.result})
+            };
+            reader.readAsDataURL(response.data);
+        })
+        .catch(error => {
+            console.log('Error:', error);
+            showMessage(error.message);
+        });
+    }
+
+    useEffect(() => {
+        reloadImage();
+    }, []); 
 
     return(
         <Form formData={formData} setFormData={setFormData} submitText={"Completar Registro"} onSubmit={handleSubmit} items={[
@@ -44,13 +69,18 @@ function RegisterForm({signIn, showMessage}){
                 name:"senha",
                 type:"password"
             },
-        ]}/>
+        ]}>
+            <img className='imagemAvatarForm' src={formData.avatar} alt="foto de perfil" />
+            <button type="button" className="refresh-avatar-button" onClick={reloadImage}>
+                <i className="fas fa-sync-alt"></i>
+            </button>
+        </Form>
     )
 }
 
 const mapDispatchToProps = (dispatch) =>{
   return {
-    signIn: () => dispatch(SignIn()),
+    signIn: (usr) => dispatch(SignIn(usr)),
     showMessage: (txt) => dispatch(ShowMessage(txt))
   }
 };

@@ -22,3 +22,31 @@
   border-radius: 20px;
   display: table;
 }
+
+.imagemAvatarForm{
+  width: 200px;
+  height: 200px;
+  align-self: center;
+  border-radius: 50%;
+  outline: var(--light) solid 10px;
+}
+
+.dotted-line {
+  border-top: 5px dotted var(--light);
+  margin: 20px;
+}
+
+.refresh-avatar-button{
+  align-self: center;
+  transform: translate(80px, -25px);
+  background-color: var(--light);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.refresh-avatar-button:hover{
+  transform: translate(80px, -25px) scale(1.3);
+}
