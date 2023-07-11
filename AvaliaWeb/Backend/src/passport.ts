@@ -8,16 +8,16 @@ const extractJwt = passportJwt.ExtractJwt;
 
 export const genToken = (user : IUsuario) => {
     return jwt.sign({
-        iss: 'AvaliaUnb',
+        iss: 'AvaliaWeb',
         sub: user.matricula,
         iat: new Date().getTime(),
         exp: new Date().setDate(new Date().getDate() + 1)
-    }, 'AvaliaUnb');
+    }, 'AvaliaWeb');
 } 
 
 passport.use(new JwtStrategy({
     jwtFromRequest: extractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'AvaliaUnb'
+    secretOrKey: 'AvaliaWeb'
 }, (jwtPayload, done) => {
     return RepositorioUsuario.Get(jwtPayload.sub)
     .then( user => {

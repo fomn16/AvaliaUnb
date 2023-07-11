@@ -19,8 +19,8 @@ function LoginForm({signIn, showMessage}){
             signIn(response.data)
         })
         .catch(error => {
-            showMessage(error.message);
-            console.log('Error:', error);
+            console.log(error);
+            showMessage(error?.response?.data?.error ?? error.message);
         });
     }
 

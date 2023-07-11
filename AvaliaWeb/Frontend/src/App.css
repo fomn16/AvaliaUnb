@@ -1,10 +1,19 @@
 :root{
+  --light:#d4ffe8;
+  --light2:#b9e6f8;
+  --medium:#46a9ff;
+  --mediumAccent:#ffa760;
+  --dark:#39433f;
+}
+
+:roop{
   --light:#84ffd0;
   --light2:#76d8ff;
   --medium:#00cba9;
   --mediumAccent:#ffba60;
   --dark:#1f3d32;
 }
+
 .App {
   text-align: center;
   width: auto;

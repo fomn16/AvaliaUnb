@@ -24,9 +24,9 @@ function Landing() {
 
   return (
     <>
-      <h1 className="TitleName">AvaliaUnb</h1>
+      <h1 className="TitleName">AvaliaWeb</h1>
       <div className="Welcome">
-        <h2>Bem vindos ao AvaliaUnb!</h2>
+        <h2>Bem vindos ao AvaliaWeb!</h2>
         <Button onClick={() => handleOption(1)}>Fazer Login</Button>
         <Button onClick={() => handleOption(2)}>Registrar-se</Button>
         {selectForm(selectedOption)}
