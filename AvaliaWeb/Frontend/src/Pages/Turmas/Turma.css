@@ -2,6 +2,7 @@
     background-color: var(--dark);
     color: var(--light);
     outline: 20px solid var(--light);
+    padding: 20px;
 }
 
 .TurmaDiv .info{

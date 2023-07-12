@@ -21,7 +21,7 @@ export interface IAvaliacaoFilter{
 export class RepositorioAvaliacao{
     static Map = ((avaliacaoRow) : IAvaliacao => {
         return {
-            usuario : {matricula : avaliacaoRow.USUARIO_MATRICULA},
+            usuario : {matricula : avaliacaoRow.USUARIO_MATRICULA, nome: avaliacaoRow.USUARIO_NOME, avatar: avaliacaoRow.USUARIO_AVATAR.toString('utf8')},
             turma : {   
                         codigo : avaliacaoRow.TURMA_CODIGO,
                         periodo : {codigo: avaliacaoRow.TURMA_PERIODO_CODIGO},
@@ -133,8 +133,9 @@ export class RepositorioAvaliacao{
 
     static Get(filtro : IAvaliacaoFilter) : Promise<IAvaliacao[] | undefined>{
         let query : string = 
-            `SELECT * 
-             FROM AVALIACAO 
+            `SELECT A.*, U.NOME AS USUARIO_NOME, U.AVATAR AS USUARIO_AVATAR
+             FROM AVALIACAO A
+             JOIN USUARIO U ON A.USUARIO_MATRICULA = U.MATRICULA
              WHERE 1=1
         ${filtro.usuario?.matricula != null ? 
             `AND USUARIO_MATRICULA = ${filtro.usuario.matricula}` : ``}

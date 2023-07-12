@@ -29,7 +29,9 @@ export class RepositorioDenuncia{
                     codigo : denunciaRow.AVALIACAO_TURMA_CODIGO,
                     periodo : {codigo: denunciaRow.AVALIACAO_TURMA_PERIODO_CODIGO},
                     disciplina : {codigo : denunciaRow.AVALIACAO_TURMA_DISCIPLINA_CODIGO}
-                }
+                },
+                nota:denunciaRow.AVALIACAO_NOTA,
+                texto: denunciaRow.AVALIACAO_TEXTO
             },
             texto : denunciaRow.TEXTO,
             aceita: denunciaRow.ACEITA
@@ -110,11 +112,16 @@ export class RepositorioDenuncia{
 
     static Get(filtro : IDenuncia) : Promise<IDenuncia[] | undefined>{
         let query : string = 
-            `SELECT * 
-             FROM DENUNCIA 
+            `SELECT D.*, A.NOTA AS AVALIACAO_NOTA, A.TEXTO AS AVALIACAO_TEXTO
+             FROM DENUNCIA D
+             JOIN AVALIACAO A ON 
+             D.AVALIACAO_USUARIO_MATRICULA = A.USUARIO_MATRICULA AND
+             D.AVALIACAO_TURMA_PERIODO_CODIGO = A.TURMA_PERIODO_CODIGO AND
+             D.AVALIACAO_TURMA_DISCIPLINA_CODIGO = A.TURMA_DISCIPLINA_CODIGO AND
+             D.AVALIACAO_TURMA_CODIGO = A.TURMA_CODIGO
              WHERE 1=1
         ${filtro.usuario?.matricula != null ? 
-            `AND USUARIO_MATRICULA = ${filtro.usuario.matricula}` : ``}
+            `AND D.USUARIO_MATRICULA = ${filtro.usuario.matricula}` : ``}
         ${filtro.avaliacao?.usuario?.matricula != null ? 
             `AND AVALIACAO_USUARIO_MATRICULA = ${filtro.avaliacao.usuario.matricula}` : ``}
         ${filtro.avaliacao?.turma?.periodo?.codigo  != null ? 

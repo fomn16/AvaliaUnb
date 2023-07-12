@@ -1,0 +1,24 @@
+.formDenuncia{
+    position: fixed;
+    background-color: var(--dark);
+    outline: 5px solid var(--light);
+    width: 400px;
+    height: 300px;
+    top: 100px;
+    left: 600px;
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.formDenuncia .MyButton {
+    transform: scale(0.8);
+    margin-top: 0;
+}
+
+.formDenuncia .MyButton:hover {
+    transform: scale(0.9);
+}

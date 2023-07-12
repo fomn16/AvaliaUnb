@@ -82,7 +82,7 @@ function Turmas({user, showMessage}){
                                 <td>{item.disciplina.nome}</td>
                                 <td>{item.codigo}</td>
                                 <td>{item.periodo.nome}</td>
-                                <td><i className="fas fa-search my-search-icon" onClick={() => handleDetalhar(item)}></i></td>
+                                <td><i className="fas fa-search my-icon" onClick={() => handleDetalhar(item)}></i></td>
                             </tr>
                         );
                     })}
