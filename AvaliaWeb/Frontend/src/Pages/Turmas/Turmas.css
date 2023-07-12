@@ -1,0 +1,29 @@
+thead tr {
+    background-color: var(--white);
+    color: black;
+    text-align: center;
+}
+
+th,td {
+    padding: 12px 15px;
+}
+
+tbody tr {
+    border-bottom: 1px solid var(--light);
+}
+
+tbody tr:nth-of-type(even) {
+    background-color: var(--white);
+}
+
+tbody tr:last-of-type {
+    border-bottom: 2px solid #009879;
+}
+
+tbody tr.active-row {
+    font-weight: bold;
+    color: #009879;
+}
+.my-search-icon:hover{
+  cursor: pointer;
+}

@@ -2,7 +2,7 @@ import './Form.css'
 import Button from '../Button/Button';
 
 //items = [{name, type}]
-function Form ({formData, setFormData, submitText, onSubmit, items, children}){
+function Form ({formData, setFormData, submitText, onSubmit, items, children, className}){
     if(items === undefined)
         return null;
 
@@ -15,12 +15,12 @@ function Form ({formData, setFormData, submitText, onSubmit, items, children}){
     };
 
     return(
-        <form onSubmit={onSubmit}>
+        <form onSubmit={onSubmit} className={className}>
         {children}
         {items.map((item, id) => {
             return(
                 <label key={id}>
-                    <h5>{item.name}:</h5>
+                    <h5>{item.name.replace("_"," ")}:</h5>
                     <input type={item.type} name={item.name} value={formData[item.name]} onChange={handleInputChange} />
                 </label>
             )

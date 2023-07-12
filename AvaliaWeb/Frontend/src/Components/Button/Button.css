@@ -1,5 +1,5 @@
 .MyButton{
-    border-radius: 20px;
+    border-radius: var(--border);
     font-weight: bold;
     margin:20px;
     border-width: 0;
@@ -7,15 +7,31 @@
     
     background-color: var(--light);
     width: 300px;
-    height: 65px;
+    min-height: 65px;
+    height: fit-content;
     font-size:30px;
 
     position: relative;
     z-index: 10;
 }
+
 .ButtonLight{
     background-color: var(--light);
 }
+
+.MyButtonHB {
+    width: 90% !important;
+    align-self: flex-start !important;
+    margin-left: 0 !important;
+    margin-bottom: 0 !important;
+    border-radius: 0 var(--border) var(--border) 0 !important;
+    transform-origin:  left center !important;
+    transform: scale(0.8) !important;
+}
+.MyButtonHB:hover {
+    transform: scale(0.9) !important;
+}
+
 .MyButton:hover {
     transform: scale(1.1);
 }

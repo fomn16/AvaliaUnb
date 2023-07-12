@@ -15,6 +15,7 @@ form label{
   justify-content: flex-start;
   align-items: flex-start;
   text-transform: capitalize;
+  margin: 0 15px 0 15px;
 }
 
 form button{
@@ -31,7 +32,7 @@ input{
   margin: 8px 0;
   display: inline-block;
   border: 1px solid rgb(204, 204, 204);
-  border-radius: 20px;
+  border-radius: var(--border);
   box-sizing: border-box;
 }
 
@@ -43,4 +44,13 @@ input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
+}
+
+.formH{
+  padding: 10px !important;
+  display: flex !important;
+  flex-direction: row !important;
+  height: fit-content !important;
+  background-color: var(--dark) !important;
+  color: var(--light) !important;
 }

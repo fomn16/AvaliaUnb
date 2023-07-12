@@ -1,17 +1,11 @@
 :root{
-  --light:#d4ffe8;
-  --light2:#b9e6f8;
-  --medium:#46a9ff;
-  --mediumAccent:#ffa760;
-  --dark:#39433f;
-}
-
-:roop{
-  --light:#84ffd0;
-  --light2:#76d8ff;
-  --medium:#00cba9;
-  --mediumAccent:#ffba60;
-  --dark:#1f3d32;
+  --white:rgba(243, 243, 243, 0.9);
+  --light:rgb(212, 255, 232);
+  --light2:rgb(185, 230, 248);
+  --medium:rgb(70, 169, 255);
+  --mediumAccent:rgb(255, 167, 96);
+  --dark:rgb(57, 67, 63);
+  --border: 20px
 }
 
 .App {
@@ -27,7 +21,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: top;
+  justify-content: flex-start;
   font-size: calc(10px + 2vmin);
   position:relative;
 }
@@ -37,7 +31,7 @@
   bottom: 0;
   left: 0;
   position: relative;
-  background-color: var(--light2);
+  background-image: linear-gradient(to bottom,  var(--light2),  var(--mediumAccent));
   z-index: -2;
   position: fixed;
 }
@@ -50,4 +44,62 @@
   transform-origin: bottom;
   transform: scaleY(0.6);
   width: 100%;
+}
+
+.clouds{
+  display: flex;
+  position: fixed;
+  flex-direction: row;
+  align-content: space-around;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+.cloud {
+  width: 100px; 
+  height: 60px;
+  position: absolute;
+  background-color: var(--light);
+  border-radius: 50px;
+  left: -100px;
+}
+.cloud-1 {
+  animation: moveCloud 18s linear infinite;
+  animation-delay: 0s;
+}
+.cloud-2 {
+  animation: moveCloud 20s linear infinite;
+  animation-delay: 5s;
+}
+.cloud-3 {
+  animation: moveCloud 22s linear infinite;
+  animation-delay: 10s;
+}
+.cloud-4 {
+  animation: moveCloud 24s linear infinite;
+  animation-delay: 15s;
+}
+.cloud-5 {
+  animation: moveCloud 26s linear infinite;
+  animation-delay: 20s;
+}
+.cloud-6 {
+  animation: moveCloud 28s linear infinite;
+  animation-delay: 25s;
+}
+.cloud-7 {
+  animation: moveCloud 30s linear infinite;
+  animation-delay: 30s;
+}
+
+@keyframes moveCloud {
+  0% {
+    left: -100px; /* Starting position of the cloud */
+  }
+  100% {
+    left: calc(100% + 100px); /* Ending position of the cloud */
+  }
 }

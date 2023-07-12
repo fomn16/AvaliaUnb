@@ -1,0 +1,11 @@
+.TurmaDiv{
+    background-color: var(--dark);
+    color: var(--light);
+    outline: 20px solid var(--light);
+}
+
+.TurmaDiv .info{
+    text-align: left;
+    line-height: 1.5;
+    padding-left: 30px;
+}

@@ -20,7 +20,7 @@ global.app.post("/avaliacao", passport.authenticate('jwt',{session: false}), (re
     });
 });
 
-global.app.get("/avaliacao", passport.authenticate('jwt',{session: false}), (req, res, next) => {
+global.app.post("/avaliacao/listar", passport.authenticate('jwt',{session: false}), (req, res, next) => {
     const filtroAvaliacao : IAvaliacaoFilter = req.body;
     RepositorioAvaliacao.Get(filtroAvaliacao)
     .then( avaliacao => {

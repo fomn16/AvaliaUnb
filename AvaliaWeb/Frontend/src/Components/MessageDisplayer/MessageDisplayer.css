@@ -10,7 +10,7 @@
     align-self: center;
     padding: 5px 20px 5px 20px;
     min-width: 100px;
-    border-radius: 20px;
+    border-radius: var(--border);
     position: fixed;
     z-index: 100;
 }
